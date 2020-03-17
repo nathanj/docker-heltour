@@ -17,7 +17,7 @@ services:
   web:
     build: .
     hostname: docker_web
-    command: sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    command: sh -c "cp /local/*.py /local/heltour/heltour/local/ && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
     volumes:
       - .:/local
     ports:
@@ -28,7 +28,7 @@ services:
   api:
     build: .
     hostname: docker_api
-    command: sh -c "HELTOUR_APP=API_WORKER python manage.py runserver 0.0.0.0:8880"
+    command: sh -c "cp /local/*.py /local/heltour/heltour/local/ && HELTOUR_APP=API_WORKER python manage.py runserver 0.0.0.0:8880"
     volumes:
       - .:/local
     ports:
@@ -39,7 +39,7 @@ services:
   celery:
     build: .
     hostname: docker_celery
-    command: celery -A heltour worker -l info
+    command: sh -c "cp /local/*.py /local/heltour/heltour/local/ && celery -A heltour worker -l info"
     volumes:
       - .:/local
     depends_on:
