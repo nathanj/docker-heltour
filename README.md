@@ -12,7 +12,7 @@ Ensure that your editor has an [EditorConfig plugin](https://editorconfig.org/#d
 2. Obtain a copy of the cleansed database from the slack channel and place it in the data/ directory.
 3. `docker-compose up db`, wait for it to finish loading the initial sql, then Ctrl-C it.
 4. `docker-compose up`
-5. `docker exec -it heltour_web_1 python manage.py createsuperuser` to create your admin account.
+5. `docker exec -it docker-heltour_web_1 python manage.py createsuperuser` to create your admin account.
 6. Changes you make in django will auto reload. If you make celery task changes
    then you can run `docker-compose restart celery` to reload.
 
