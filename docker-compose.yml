@@ -1,0 +1,50 @@
+version: '3'
+
+services:
+  redis:
+    hostname: redis
+    image: redis
+  db:
+    hostname: db
+    image: postgres
+    environment:
+      POSTGRES_USER: heltour_lichess4545
+      POSTGRES_DB: heltour_lichess4545
+      POSTGRES_PASSWORD: sown shuts combiner chattels
+    volumes:
+      - ./data:/docker-entrypoint-initdb.d/
+      - data-volume:/var/lib/postgresql/data/
+  web:
+    build: .
+    hostname: docker_web
+    command: sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/local
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - redis
+  api:
+    build: .
+    hostname: docker_api
+    command: sh -c "HELTOUR_APP=API_WORKER python manage.py runserver 0.0.0.0:8880"
+    volumes:
+      - .:/local
+    ports:
+      - "8880:8880"
+    depends_on:
+      - db
+      - redis
+  celery:
+    build: .
+    hostname: docker_celery
+    command: celery -A heltour worker -l info
+    volumes:
+      - .:/local
+    depends_on:
+      - db
+      - redis
+
+volumes:
+  data-volume:
